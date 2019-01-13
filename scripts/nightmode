@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# Nightmode: simpler version of redshift 
+# or flu.x using sct
+
+export DISPLAY=:0.0
+WTII=$(date +"%H") #What Time Is It
+
+if [ "$WTII" -gt 16 ]; then
+
+    x=6500
+    while [ $x -ge 3000 ]; do
+        sct $x
+        x=$(( x-100 ));
+        sleep 30;
+    done
+
+else
+
+    sct
+
+fi

@@ -17,7 +17,7 @@
 ;; Set default font
 (set-face-attribute 'default nil
                     :family "Fira Mono"
-                    :height 105
+                    :height 100
                     :weight 'normal
                     :width 'normal)
 
@@ -62,6 +62,13 @@
 (add-hook 'prog-mode-hook 'linum-mode)
 (setq linum-format "%4d ")
 
+;; set show paren mode on
+(show-paren-mode 1)
+
+;; ido
+(ido-mode 1)
+(ido-everywhere 1)
+
 ;; ----------- ;;
 ;; USE-PACKAGE ;;
 ;; ----------- ;;
@@ -93,12 +100,39 @@
   :bind
   ("C-l" . slime-repl-clear-buffer)
   :config
-   (setq inferior-lisp-program (executable-find "ccl"))
+   (load (expand-file-name "~/repo/common-lisp/quicklisp/slime-helper.el"))
+   (setq inferior-lisp-program (executable-find "sbcl"))
    (slime-setup '(slime-repl slime-fancy slime-company)))
 
 (use-package smex
   :init (smex-initialize)
   :bind ("M-x" . smex))
+
+(use-package inf-clojure
+  :ensure t
+  :init
+  (defun figwheel ()
+    (interactive)
+    (run-clojure "lein figwheel"))
+  (defun figwheel-android ()
+    (interactive)
+    (inf-clojure "lein figwheel android"))
+  :bind
+  ("C-l" . inf-clojure-clear-repl-buffer)
+  :config
+  (add-hook 'clojurescript-mode-hook 'inf-clojure-minor-mode))
+
+;; Require SuperCollider mode
+(require 'sclang)
+
+;; Require w3m browser
+(require 'w3m)
+(eval-after-load "w3m"
+ '(progn
+   (define-key w3m-mode-map [left] 'backward-char)
+   (define-key w3m-mode-map [right] 'forward-char)
+   (define-key w3m-mode-map [up] 'previous-line)
+   (define-key w3m-mode-map [down] 'next-line)))
 
 ;; ---------------- ;;
 ;; CUSTOM VARIABLES ;;
@@ -109,22 +143,27 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-enabled-themes (quote (kosmos)))
+ '(background-color "#000000")
+ '(background-mode dark)
+ '(cursor-color "#cccccc")
+ '(custom-enabled-themes (quote (noctilux)))
  '(custom-safe-themes
    (quote
-    ("ab98c7f7a58add58293ac67bec05ae163b5d3f35cddf18753b2b073c3fcd8841" "1f3344c1b128026f1187213cfbdad4ec0849f96ad437d61d42a42f976b5def4c" "075351c6aeaddd2343155cbcd4168da14f54284453b2f1c11d051b2687d6dc48" "54d091c28661aa25516d4f58044412e745eddb50c8e04e3a0788a77941981bb0" "4e4befa32590db02faa3b1589e7ce9f3b6065cd24e8da804b39b747f2473dd50" "39546362fed4d5201b2b386dc21f21439497c9eec5fee323d953b3e230e4083e" default)))
+    ("a838ae07e630fc131d4a166200618af8f329e4e4b02e0b01ff2d16693a285aad" "8885761700542f5d0ea63436874bf3f9e279211707d4b1ca9ed6f53522f21934" default)))
+ '(foreground-color "#cccccc")
  '(package-selected-packages
    (quote
-    (smex auto-complete slime-company geiser slime helm magit busybee-theme mustard-theme sexy-monochrome-theme kosmos-theme cider use-package smooth-scrolling slime-theme racer parinfer inverse-acme-theme flycheck-rust flycheck-irony darcula-theme counsel company-racer cargo atom-dark-theme ace-window))))
+    (w3m inf-clojure smartparens zeal-at-point smex auto-complete slime-company geiser slime helm magit sexy-monochrome-theme kosmos-theme cider use-package smooth-scrolling slime-theme racer parinfer inverse-acme-theme flycheck-rust flycheck-irony counsel company-racer cargo ace-window)))
+ '(show-paren-mode t))
 
 ;; Custom Faces
-(custom-set-faces
+;;(custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(font-lock-constant-face ((t (:foreground "#b0b090"))))
- '(font-lock-keyword-face ((t (:foreground "#ffffff" :weight bold)))))
+ ;;'(font-lock-constant-face ((t (:foreground "#b0b090"))))
+ ;;'(font-lock-keyword-face ((t (:foreground "#eeeeee" :weight bold)))))
 
 
 ;; ------------------ ;;
@@ -139,4 +178,19 @@
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
-(global-set-key (kbd "s-s") 'kill-this-buffer)
+(global-set-key (kbd "C-x C-k") 'kill-this-buffer)
+
+(global-set-key (kbd "M-C-z") 'zeal-at-point)
+
+(global-set-key (kbd "C-x ;") 'comment-region)
+
+(global-set-key "\C-d" "\C-a\C- \C-n\M-w\C-y")
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :stipple nil :background "#0d0d0d" :foreground "#cccccc" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 105 :width normal :foundry "CTDB" :family "Fira Mono"))))
+ '(font-lock-keyword-face ((t (:foreground "#eeeeee" :weight bold)))))
+ 
