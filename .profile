@@ -4,10 +4,18 @@ PATH="$HOME/bin:$PATH:$HOME/.cargo/bin:$HOME/scripts"
 PS1='\$ '
 export PATH PS1
 
-alias ll='ls -lahFN'
+alias ll='ls -lahFN --color=auto'
 alias vi='vim'
 alias em='emacsclient'
-alias zi='zile'
+alias zi='doas -n zile'
+alias xa='doas -n xbps-install'
+alias xu='doas -n xbps-install -Syu'
+alias xq='doas -n xbps-query -R -s'
+alias xr='doas -n xbps-remove'
+alias shut='doas shutdown -h now'
+alias reboot='doas reboot'
+alias lib?='ldconfig -p | grep'
+alias draw='gromit-mpx'
 
 start_tmux() {
   if ! tmux new-session -As 0 -n "$1" "cd $2 && $3" 2>/dev/null;then
