@@ -1,15 +1,15 @@
 # MAIN
 
-fontname "Source Sans Pro:pixelsize=14"
-gap 19 0 0 1
-command terminal "st -e tmux"
-borderwidth 1
-color inactiveborder "#525252"
-color activeborder "#b9b9b9"
+gap 0 0 0 0
+command terminal "urxvtc -e tmux"
+borderwidth 2
+color inactiveborder "#bbbbbb"
+color activeborder "#000000"
 color font "#ececec"
-color menubg "#0c0c0c"
-color menufg "#b9b9b9"
-fontname "Fira Mono:pixelsize=12"
+color selfont "#000000"
+color menubg "#000000"
+color menufg "#ececec"
+fontname "Source Code Pro:pixelsize=10"
 
 # Turn on sticky-group mode 
 sticky yes 

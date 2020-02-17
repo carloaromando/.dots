@@ -1,0 +1,96 @@
+!!!!!!!!!!!!!!!!
+! emacs settings
+!!!!!!!!!!!!!!!!
+
+Emacs.pane.menubar.*.fontList: 8x16
+Emacs.background: #FEFBF6
+Emacs.foreground: #FEFBF6
+Emacs.color0: #FEFBF6
+Emacs.color8: #FEFBF6      
+Emacs.color1: #FEFBF6      
+Emacs.color9: #FEFBF6      
+Emacs.color2: #FEFBF6
+Emacs.color10: #FEFBF6
+Emacs.color3: #FEFBF6
+Emacs.color11: #FEFBF6
+Emacs.color4: #FEFBF6
+Emacs.color12: #FEFBF6
+Emacs.color5: #FEFBF6
+Emacs.color13: #FEFBF6
+Emacs.color6: #FEFBF6
+Emacs.color14: #FEFBF6
+Emacs.color7: #FEFBF6
+Emacs.color15: #FEFBF6
+
+!!!!!!!!!!!!!!
+! xft settings
+!!!!!!!!!!!!!!
+
+Xft.dpi: 96
+Xft.antialias: true
+Xft.hinting: true
+Xft.hintstyle: hintslight
+Xft.rgba: rgb
+Xft.lcdfilter: lcddefault
+
+!!!!!!!!!!!!!!!!
+! urxvt settings
+!!!!!!!!!!!!!!!!
+
+URxvt.font: xft:Source Code Pro:pixelsize=12:antialias=true:Semibold
+URxvt.boldFont: xft:Source Code Pro:pixelsize=12:antialias=true:Bold
+URxvt.italicFont: xft:Source Code Pro:pixelsize=12:antialias=true:Italic
+URxvt.boldItalicFont: xft:Source Code Pro:pixelsize=12:antialias=true:Italic:Bold
+URxvt.scrollbar: false
+URxvt.visualBell: false
+URxvt.saveLines: 0
+URxvt.geometry: 110x40 
+URxvt.depth: 24
+URxvt.cursorBlink: true
+URxvt.cursorUnderline: false
+URxvt.internalBorder: 5
+URxvt.iso14755: false
+URxvt.underlineURLs: true
+URxvt.urlButton: 1
+URxvt.copyCommand: xclip -i -selection clipboard
+URxvt.pasteCommand: xclip -o -selection clipboard
+URxvt.perl-ext-common: default,clipboard,selection-to-clipboard
+URxvt.keysym.Shift-Control-V: eval:paste_clipboard
+URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
+URxvt.urlLauncher:     /usr/bin/firefox
+URxvt.background:      black
+URxvt.foreground:      #00cc00
+URxvt.cursorColor:     #00ff00
+URxvt.underlineColor:  green
+
+! black
+URxvt.color0:       black
+URxvt.color8:       black
+
+! red
+URxvt.color1:       #00cc00
+URxvt.color9:       #00cc00
+
+! green
+URxvt.color2:       #00cc00
+URxvt.color10:      #00cc00
+
+! yellow
+URxvt.color3:       #00cc00
+URxvt.color11:      #00cc00
+
+! blue
+URxvt.color4:       #00cc00
+URxvt.color12:      #00cc00
+
+! magenta
+URxvt.color5:       #00cc00
+URxvt.color13:      #00cc00
+
+! cyan
+URxvt.color6:       #00cc00
+URxvt.color14:      #00cc00
+
+! white
+URxvt.color7:       #ffffff
+URxvt.color15:      #ffffff

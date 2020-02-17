@@ -1,5 +1,0 @@
-#!/bin/sh
-
-while true; do
-	cwm 2> ~/.cwm.log
-done
