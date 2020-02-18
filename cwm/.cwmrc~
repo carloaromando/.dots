@@ -19,7 +19,7 @@ unbind-key all
 
 bind-key 4-r restart
 bind-key 4-q window-delete
-bind-key 4-t "urxvtc -e tmux"
+bind-key 4-t "st -e tmux"
 bind-key 4-d menu-exec
 
 # WINDOW CONTROLS
