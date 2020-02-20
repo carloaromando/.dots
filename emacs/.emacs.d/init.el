@@ -52,7 +52,7 @@
 (setq use-dialog-box nil)
 
 ;; highlight line mode
-(add-hook 'prog-mode-hook 'hl-line-mode)
+;; (add-hook 'prog-mode-hook 'hl-line-mode)
 
 ;; mode line settings
 (add-hook 'prog-mode-hook 'linum-mode)
@@ -66,6 +66,9 @@
 (ido-everywhere 1)
 (global-prettify-symbols-mode +1)
 (yas-global-mode -1)
+
+;; global company
+(global-company-mode)
 
 ;; set tab size to 4
 (setq default-tab-width 4)
@@ -84,7 +87,6 @@
   :bind
   ("C-c /" . company-complete)
   :config
-  (global-company-mode)
   (setq company-idle-delay 0.2)
   (add-hook 'racer-mode-hook
       (lambda ()
@@ -109,8 +111,7 @@
     (add-hook 'emacs-lisp-mode-hook #'parinfer-mode)
     (add-hook 'common-lisp-mode-hook #'parinfer-mode)
     (add-hook 'scheme-mode-hook #'parinfer-mode)
-    (add-hook 'lisp-mode-hook #'parinfer-mode)
-    (add-hook 'hy-mode-hook #'parinfer-mode)))
+    (add-hook 'lisp-mode-hook #'parinfer-mode)))
 
 ;; Common Lisp IDE
 (use-package slime
@@ -141,18 +142,23 @@
 
 ;; Inferior mode for Clojure (lightweight alternative to Cider)
 (use-package inf-clojure
+  :ensure t)
+
+(use-package cider
   :ensure t
-  :init
-  (defun figwheel ()
-    (interactive)
-    (run-clojure "lein figwheel"))
-  (defun figwheel-android ()
-    (interactive)
-    (inf-clojure "lein figwheel android"))
-  :bind
-  ("C-l" . inf-clojure-clear-repl-buffer)
   :config
-  (add-hook 'clojurescript-mode-hook 'inf-clojure-minor-mode))
+  (progn
+    (add-hook 'clojurescript-mode-hook 'cider-mode)
+    (add-hook 'clojure-mode-hook 'cider-mode)))
+
+(use-package flycheck-clj-kondo
+  :ensure t
+  :config (add-hook 'clojure-mode-hook 'flycheck-mode))
+
+(use-package clojure-mode
+  :ensure t
+  :config
+  (require 'flycheck-clj-kondo))
 
 ;; Faust IDE
 (use-package faustine
@@ -392,13 +398,9 @@
   :mode "\\.elm\\'"
   :ensure t)
 
-;; F# mode
-(use-package fsharp-mode
-  :defer t
+(use-package magit
   :ensure t
-  :config
-  (setq inferior-fsharp-program "/bin/fsharpi --readline-")
-  (setq fsharp-compiler "/bin/fsharpc"))
+  :bind (("M-s" . magit-status)))
 
 ;; ---------------- ;;
 ;; CUSTOM VARIABLES ;;
@@ -419,7 +421,7 @@
  '(faustine-output-buffer-name "\\*Faust\\*")
  '(package-selected-packages
    (quote
-    (qml-mode fsharp-mode ibuffer-sidebar yasnippet-snippets elm-mode flx markdown-mode+ intero hindent purescript-mode tidal haskell-mode psc-ide sclang-snippets eziam-theme lisp lisp-mode paredit dired-sidebar god-mode sonic-pi rvm enh-ruby ehn-ruby ehn-ruby-mode robe-mode highlight osc robe inf-ruby yasnippet processing-mode sclang monroe hy-mode diminish faustine w3m inf-clojure smartparens zeal-at-point smex auto-complete slime-company geiser slime helm magit sexy-monochrome-theme kosmos-theme cider use-package smooth-scrolling slime-theme racer parinfer inverse-acme-theme flycheck-rust flycheck-irony counsel company-racer cargo ace-window)))
+    (transient flycheck-clj-kondo qml-mode fsharp-mode ibuffer-sidebar yasnippet-snippets elm-mode flx markdown-mode+ intero hindent purescript-mode tidal haskell-mode psc-ide sclang-snippets eziam-theme lisp lisp-mode paredit dired-sidebar god-mode sonic-pi rvm enh-ruby ehn-ruby ehn-ruby-mode robe-mode highlight osc robe inf-ruby yasnippet processing-mode sclang monroe hy-mode diminish faustine w3m inf-clojure smartparens zeal-at-point smex auto-complete slime-company geiser slime helm magit sexy-monochrome-theme kosmos-theme cider use-package smooth-scrolling slime-theme racer parinfer inverse-acme-theme flycheck-rust flycheck-irony counsel company-racer cargo ace-window)))
  '(show-paren-mode t))
 
 ;; ------------------------- ;;
@@ -458,7 +460,7 @@
 ;; Set Font
 (set-face-attribute 'default nil
                     :family "Source Code Pro"
-		    :height 80
+                    :height 75
                     :weight 'semibold)
 
 ;;------------------------;;
@@ -490,7 +492,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(company-scrollbar-bg ((t (:background "#ffe081"))))
- '(company-tooltip ((t (:background "#ffe081" :foreground "black"))))
- '(company-tooltip-search-selection ((t (:inherit highlight))))
- '(company-tooltip-selection ((t (:background "#fcca80")))))
+ )

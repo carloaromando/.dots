@@ -3,24 +3,24 @@
 !!!!!!!!!!!!!!!!
 
 Emacs.pane.menubar.*.fontList: 8x16
-Emacs.background: #FEFBF6
-Emacs.foreground: #FEFBF6
-Emacs.color0: #FEFBF6
-Emacs.color8: #FEFBF6      
-Emacs.color1: #FEFBF6      
-Emacs.color9: #FEFBF6      
-Emacs.color2: #FEFBF6
-Emacs.color10: #FEFBF6
-Emacs.color3: #FEFBF6
-Emacs.color11: #FEFBF6
-Emacs.color4: #FEFBF6
-Emacs.color12: #FEFBF6
-Emacs.color5: #FEFBF6
-Emacs.color13: #FEFBF6
-Emacs.color6: #FEFBF6
-Emacs.color14: #FEFBF6
-Emacs.color7: #FEFBF6
-Emacs.color15: #FEFBF6
+Emacs.background: #f6f6f6
+Emacs.foreground: #f6f6f6
+Emacs.color0: #f6f6f6
+Emacs.color8: #f6f6f6      
+Emacs.color1: #f6f6f6      
+Emacs.color9: #f6f6f6      
+Emacs.color2: #f6f6f6
+Emacs.color10: #f6f6f6
+Emacs.color3: #f6f6f6
+Emacs.color11: #f6f6f6
+Emacs.color4: #f6f6f6
+Emacs.color12: #f6f6f6
+Emacs.color5: #f6f6f6
+Emacs.color13: #f6f6f6
+Emacs.color6: #f6f6f6
+Emacs.color14: #f6f6f6
+Emacs.color7: #f6f6f6
+Emacs.color15: #f6f6f6
 
 !!!!!!!!!!!!!!
 ! xft settings

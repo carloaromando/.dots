@@ -20,13 +20,12 @@
 
 (let ((fg "#111111")
       (fg-table "#222291")
-      (bg "#FEFBF6")
+      (bg "#f6f6f6")
       (bg-light "#ddddd8")
-      (bg-modeline "#dcd7c9")
+      (bg-modeline "#2c2c2c")
       (fg-light "#ddddd8")
-      (bg-highlight "#fde9cc")
-      (bg-region "#FCCA80")
-      (bg-highlight-2 "LightCyan")
+      (bg-highlight "#add6ff")
+      (bg-highlight-2 "#deeeff")
       (bg-highlight-3 "LightGreen"))
 
   (custom-theme-set-faces
@@ -42,7 +41,7 @@
    `(font-latex-italic-face ((t (:foreground ,fg :slant italic))))
    `(font-latex-match-reference-keywords ((t (:foreground ,fg))))
    `(font-latex-match-variable-keywords ((t (:foreground ,fg))))
-   `(font-latex-string-face ((t (:foreground "#4C4C4B" :underline t))))
+   `(font-latex-string-face ((t (:foreground "#4C4C4B"))))
    `(font-lock-builtin-face ((t (:background ,bg :foreground ,fg))))
    `(font-lock-comment-face ((t (:foreground "#4C4C4B" :slant italic))))
    `(font-lock-constant-face ((t (:foreground ,fg))))
@@ -51,7 +50,7 @@
    `(font-lock-keyword-face ((t (:foreground ,fg :slant italic))))
    `(font-lock-preprocessor-face ((t (:foreground ,fg))))
    `(font-lock-reference-face ((t (:foreground ,fg))))
-   `(font-lock-string-face ((t (:foreground "#4C4C4B" :slant italic :underline t))))
+   `(font-lock-string-face ((t (:foreground "#770000" :slant italic))))
    `(font-lock-type-face ((t (:foreground ,fg))))
    `(font-lock-variable-name-face ((t (:foreground ,fg :underline nil))))
    `(font-lock-warning-face ((t (:foreground ,fg :weight bold))))
@@ -64,17 +63,18 @@
    `(ido-first-match ((t (:foreground ,fg))))
    `(ido-only-match ((t (:foreground ,fg))))
    `(ido-subdir ((t (:foreground ,fg))))
-   `(isearch ((t (:background "#eeeee8" :foreground ,fg))))
+   `(isearch ((t (:background ,bg-highlight :foreground ,fg))))
    `(link ((t (:foreground ,fg))))
    `(minibuffer-prompt ((t (:foreground ,fg :weight bold))))
-   `(mode-line ((t (:background ,bg-modeline :foreground ,fg :height 0.9))))
+   `(mode-line ((t (:background ,bg-modeline :foreground "#eeeeee" :height 0.9))))
    `(mode-line-buffer ((t (:foreground ,fg :weight bold))))
-   `(mode-line-inactive ((t (:background "#aba79c" :foreground "#aba79c" :height 0.9))))
+   `(mode-line-inactive ((t (:background ,bg-modeline :foreground ,bg-modeline :height 0.9))))
    `(mode-line-minor-mode ((t (:weight ultra-light))))
-   `(modeline ((t (:background ,bg :foreground ,fg :height 0.9))))
-   `(region ((t (:background ,bg-region :foreground ,fg))))
+   `(modeline ((t (:background ,bg-modeline :foreground "#eeeeee" :height 0.9))))
+   `(region ((t (:background ,bg-highlight :foreground ,fg))))
    `(slime-repl-inputed-output-face ((t (:foreground ,fg))))
    `(whitespace-line ((t (:background ,bg-highlight-2 :foreground ,fg))))
+   `(lazy-highlight ((t (:background ,bg-highlight-2 :foreground ,fg))))
 
    ;; org
    `(org-agenda-date ((t (:foreground ,fg :height 1.2))))
@@ -88,7 +88,6 @@
    `(org-date ((t (:foreground ,fg) :underline)))
    `(org-done ((t (:foreground ,fg-light))))
    `(org-hide ((t (:foreground ,bg))))
-   ;; use :overline to give headings more top margin
    `(org-level-1 ((t (:foreground ,fg :weight semi-bold :height 1.3))))
    `(org-level-2 ((t (:foreground ,fg :weight semi-bold :height 1.1 :overline ,bg))))
    `(org-level-3 ((t (:foreground ,fg :weight semi-bold :height 1.1 :overline ,bg))))
@@ -104,19 +103,15 @@
    `(org-verse ((t (:inherit org-block :slant italic))))
    `(org-table ((t (:foreground ,fg-table))))
 
-   ;; powerline
-   `(powerline-active1 ((t (:background "grey22" :foreground ,bg :inherit mode-line))))
-   `(powerline-active2 ((t (:background "grey40" :foreground ,bg :inherit mode-line))))
-
    ;; magit
-   `(magit-header ((t (:weight semi-bold))))
-   `(magit-item-mark ((t (:background ,bg-highlight))))
-   `(magit-item-highlight ((t (:weight bold))))
-   `(magit-section-heading ((t (:weight semi-bold :height 1.2))))
-   `(magit-section-highlight ((t (:weight semi-bold))))
-   `(magit-diff-context-highlight ((t (:foreground ,fg))))
-   `(magit-branch-local ((t (:weight bold))))
-   `(magit-branch-remote ((t (:weight bold))))
+   ;; `(magit-header ((t (:weight semi-bold))))
+   ;; `(magit-item-mark ((t (:background ,bg-highlight))))
+   `(magit-section-highlight ((t (:background "#eaeaea"))))
+   ;; `(magit-section-heading ((t (:weight semi-bold :height 1.2))))
+   ;; `(magit-section-highlight ((t (:weight semi-bold))))
+   ;; `(magit-diff-context-highlight ((t (:foreground ,fg))))
+   ;; `(magit-branch-local ((t (:weight bold))))
+   ;; `(magit-branch-remote ((t (:weight bold))))
 
    ;; diff
    `(diff-added ((t (:background "#e9ffe9"))))
@@ -161,8 +156,10 @@
 
    ;; company
    `(company-echo-common ((t (:foreground ,fg))))
-   `(company-tooltip-selection ((t (:background ,bg-highlight))))
-   `(company-tooltip ((t (:background "#fffac7" :foreground "black"))))
+   `(company-tooltip ((t (:background "#eaeaea" :foreground "black"))))
+   `(company-scrollbar-bg ((t :background "#eaeaea")))
+   `(company-tooltip-search-selection ((t (:inherit highlight))))
+   `(company-tooltip-selection ((t (:background "#dadada"))))
    
    ;; parens - parenface
    '(parenface-paren-face ((t (:foreground "blue"))))
@@ -198,29 +195,15 @@
    `(web-mode-current-element-highlight-face ((t (:inherit normal :weight bold :foreground ,fg))))
 
    ;; misc
-   `(idle-highlight ((t (:background ,bg-highlight))))
    `(yas-field-highlight-face ((t (:underline t :background ,bg-highlight :foreground ,fg))))
    `(eshell-prompt ((t (:foreground ,fg :weight bold))))
    `(cider-result-overlay-face ((t (:weight bold))))
-   `(hl-line ((t (:background ,bg-highlight))))
+   `(hl-line ((t (:background ,bg))))
    `(Shadow ((t (:foreground "grey75"))))
    `(idle-highlight ((t (:background ,bg-highlight))))
    
-   ;; evil-quickscope
-   `(evil-quickscope-first-face ((t (:foreground ,fg :background "#eeeee8"))))
-   `(evil-quickscope-second-face ((t (:foreground ,fg :background ,bg-highlight-3))))
-
-   ;; evil-snipe
-   `(evil-snipe-first-match-face ((t (:foreground ,fg :background "#eeeee8"))))
-   `(evil-snipe-matches-face ((t (:foreground ,fg :background ,bg-highlight-3))))
-
    ;; clojure
-   `(clojure-keyword-face ((t (:slant italic))))
-
-   ;; evil
-   `(evil-ex-lazy-highlight ((t (:background ,bg-highlight-2))))
-   `(evil-ex-substitute-matches ((t (:background ,bg-highlight-2))))
-   `(evil-ex-substitute-replacement ((t (:background ,bg-highlight :underline nil :foreground ,fg))))))
+   `(clojure-keyword-face ((t (:slant italic))))))
 
 ;;;###autoload
 (when load-file-name
