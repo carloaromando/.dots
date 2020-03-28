@@ -63,12 +63,11 @@
 
 ;; ido
 (ido-mode 1)
-(ido-everywhere 1)
-(global-prettify-symbols-mode +1)
-(yas-global-mode -1)
+(setq ido-everywhere t)
+(setq ido-enable-flex-matching t)
 
-;; global company
-(global-company-mode)
+;; Prettify
+(global-prettify-symbols-mode 1)
 
 ;; set tab size to 4
 (setq default-tab-width 4)
@@ -77,15 +76,25 @@
 (add-to-list 'default-frame-alist '(width  . 120))
 (add-to-list 'default-frame-alist '(height . 60))
 
+(setq vc-follow-symlinks t)
+
 ;; ----------- ;;
 ;; USE-PACKAGE ;;
 ;; ----------- ;;
+
+;; YAS snippets
+(use-package yasnippet
+  :ensure t
+  :config
+  (yas-global-mode -1))
 
 ;; Auto completion with Company
 (use-package company
   :ensure t 
   :bind
-  ("C-c /" . company-complete)
+  ("C-c C-/" . company-complete)
+  :init
+  (global-company-mode t)
   :config
   (setq company-idle-delay 0.2)
   (add-hook 'racer-mode-hook
@@ -111,10 +120,12 @@
     (add-hook 'emacs-lisp-mode-hook #'parinfer-mode)
     (add-hook 'common-lisp-mode-hook #'parinfer-mode)
     (add-hook 'scheme-mode-hook #'parinfer-mode)
-    (add-hook 'lisp-mode-hook #'parinfer-mode)))
+    (add-hook 'lisp-mode-hook #'parinfer-mode)
+    (add-hook 'janet-mode-hook #'parinfer-mode)))
 
 ;; Common Lisp IDE
 (use-package slime
+  :disabled
   :ensure t
   :bind
   ("C-l" . slime-repl-clear-buffer)
@@ -273,7 +284,7 @@
   :init
   (add-hook 'enh-ruby-mode-hook 'robe-mode))
 
-;; GOD-mode
+;; God mode
 (use-package god-mode
   :ensure t
   :bind ("<escape>" . god-mode-all)
@@ -286,14 +297,14 @@
   (setq god-exempt-predicates nil)
   (defun god-mode-cursor ()
     (if (or god-local-mode buffer-read-only)
-     (progn
-      (message "Entering GOD mode...")
-      (blink-cursor-mode 0)
-      (set-cursor-color "darkred"))
-     (progn
-      (message "Exiting GOD mode...")
-      (blink-cursor-mode 1)
-      (set-cursor-color "#000000"))))
+        (progn
+          (message "Entering GOD mode...")
+          (blink-cursor-mode 0)
+          (set-cursor-color "darkred"))
+        (progn
+          (message "Exiting GOD mode...")
+          (blink-cursor-mode 1)
+          (set-cursor-color "#000000"))))
   (add-hook 'god-mode-enabled-hook 'god-mode-cursor)
   (add-hook 'god-mode-disabled-hook 'god-mode-cursor))
 
@@ -393,14 +404,76 @@
     ;; Rust completions with Company and Racer.
     (add-hook 'racer-mode-hook 'company-mode)))
 
-;; Elm mode
-(use-package elm-mode
-  :mode "\\.elm\\'"
-  :ensure t)
-
+;; Magit
 (use-package magit
   :ensure t
   :bind (("M-s" . magit-status)))
+
+;; Which Key
+(use-package which-key
+  :init
+  (which-key-mode)
+  :after
+  (god-mode)
+  :config
+  (which-key-enable-god-mode-support)
+  (setq which-key-use-C-h-commands nil)
+  (define-key which-key-mode-map (kbd "C-x <space>") 'which-key-C-h-dispatch)
+  (setq which-key-popup-type 'minibuffer)
+  (setq which-key-sort-order
+        'which-key-key-order-alpha
+        which-key-idle-delay 0.35)
+  :diminish
+  which-key-mode)
+
+;; Projectile
+(use-package projectile
+  :ensure t
+  :config
+  (define-key projectile-mode-map (kbd "C-x C-p") 'projectile-command-map)
+  (projectile-mode 1))
+
+;; Dashboard
+(use-package dashboard
+  :ensure t
+  :init
+  (progn
+    (setq dashboard-items
+      '((projects . 5)
+        (recents . 5))))
+  :config
+  (dashboard-setup-startup-hook))
+
+;; Janet mode
+(use-package janet
+  :mode ("\\.janet\\'")
+  :init (add-to-list 'load-path "~/.emacs.d/janet/janet-mode"))
+
+(use-package inf-janet
+  :init (add-to-list 'load-path "~/.emacs.d/janet/inf-janet")
+  :config
+  (progn
+    (setq inf-janet-program "~/.local/bin/janet")
+    (add-hook 'janet-mode-hook #'inf-janet-minor-mode)))  
+
+;; Lua mode
+(use-package lua-mode
+  :ensure t
+  :mode (("\\.lua\\'" . lua-mode))
+  :config
+  (add-hook 'lua-mode-hook #'company-mode))
+
+;; Fennel mode
+(defun fennel-mode-hook-fn ()
+  (interactive)
+  (slime-mode nil))
+
+(use-package fennel-mode
+  :mode ("\\.fnl\\'")
+  :init (add-to-list 'load-path "~/.emacs.d/fennel/")
+  :config
+  (progn
+    (add-hook 'fennel-mode-hook 'fennel-mode-hook-fn)))
 
 ;; ---------------- ;;
 ;; CUSTOM VARIABLES ;;
@@ -421,7 +494,7 @@
  '(faustine-output-buffer-name "\\*Faust\\*")
  '(package-selected-packages
    (quote
-    (transient flycheck-clj-kondo qml-mode fsharp-mode ibuffer-sidebar yasnippet-snippets elm-mode flx markdown-mode+ intero hindent purescript-mode tidal haskell-mode psc-ide sclang-snippets eziam-theme lisp lisp-mode paredit dired-sidebar god-mode sonic-pi rvm enh-ruby ehn-ruby ehn-ruby-mode robe-mode highlight osc robe inf-ruby yasnippet processing-mode sclang monroe hy-mode diminish faustine w3m inf-clojure smartparens zeal-at-point smex auto-complete slime-company geiser slime helm magit sexy-monochrome-theme kosmos-theme cider use-package smooth-scrolling slime-theme racer parinfer inverse-acme-theme flycheck-rust flycheck-irony counsel company-racer cargo ace-window)))
+    (lua-mode yas dashboard projectile which-key transient flycheck-clj-kondo ibuffer-sidebar yasnippet-snippets flx markdown-mode+ hindent tidal psc-ide sclang-snippets lisp lisp-mode paredit dired-sidebar god-mode rvm enh-ruby ehn-ruby ehn-ruby-mode robe-mode highlight osc robe inf-ruby yasnippet sclang monroe hy-mode diminish faustine w3m inf-clojure smartparens zeal-at-point smex auto-complete slime-company geiser slime helm magit kosmos-theme cider use-package smooth-scrolling racer parinfer inverse-acme-theme flycheck-rust flycheck-irony counsel company-racer cargo ace-window)))
  '(show-paren-mode t))
 
 ;; ------------------------- ;;
@@ -451,6 +524,9 @@
 (global-set-key (kbd "C-x C-d") 'duplicate-line) ;; duplicate line
 (global-set-key (kbd "C->") 'end-of-buffer)
 (global-set-key (kbd "C-<") 'beginning-of-buffer)
+
+(global-unset-key (kbd "C-h C-h"))
+(global-unset-key (kbd "C-x C-p"))
 
 ;; Load custom theme
 (add-to-list 'load-path "~/.emacs.d/themes/")
@@ -486,7 +562,7 @@
     (after dired-after-updating-hook first () activate)
   "Sort dired listings with directories first before adding marks."
   (dired-sort))
-
+ 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

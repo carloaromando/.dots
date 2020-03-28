@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# Workaround for xkeynail
-xhost +SI:localuser:root &
-
 # ALSA
 alsactl restore
 
@@ -13,16 +10,13 @@ setxkbmap us &
 xrdb -merge ~/.Xresources
 
 # Background
-hsetroot -solid '#414F61'
-
-# Compton
-# compton &
-
-# Bar
-#(/home/carlo/scripts/bar | lemonbar -g x18 -p -F#eeeeef -B#111113 -f "Iosevka Term SS09 Semibold"-8 -f FontAwesome-8) &
+hsetroot -solid '#5E6975'
 
 # source .Xmodmap (switch esc to caps lock)
 sleep 5 && xmodmap ~/.Xmodmap &
+
+# increase speed of scrolling for kensington expert trackball
+xinput set-prop 10 'libinput Accel Speed' 1
 
 # Start Emacs Daemon
 emacs --daemon &
@@ -30,11 +24,11 @@ emacs --daemon &
 # Start URxvt daemon
 urxvtd -q -f -o
 
-# Start nightmode script
-# /home/carlo/scripts/nightmode &
+# Start nightwatch daemon
+nightwatch &
 
-# Force color temperature to reduce blue light
-sleep 5 && sct 5000 &
+# Start xbindkeys
+xbindkeys &
 
 # xbanish
 sleep 5 && xbanish &

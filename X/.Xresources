@@ -37,14 +37,14 @@ Xft.lcdfilter: lcddefault
 ! urxvt settings
 !!!!!!!!!!!!!!!!
 
-URxvt.font: xft:Source Code Pro:pixelsize=12:antialias=true:Semibold
-URxvt.boldFont: xft:Source Code Pro:pixelsize=12:antialias=true:Bold
-URxvt.italicFont: xft:Source Code Pro:pixelsize=12:antialias=true:Italic
-URxvt.boldItalicFont: xft:Source Code Pro:pixelsize=12:antialias=true:Italic:Bold
+URxvt.font: xft:Source Code Pro:pixelsize=10:antialias=true:Semibold
+URxvt.boldFont: xft:Source Code Pro:pixelsize=10:antialias=true:Bold
+URxvt.italicFont: xft:Source Code Pro:pixelsize=10:antialias=true:Italic
+URxvt.boldItalicFont: xft:Source Code Pro:pixelsize=10:antialias=true:Italic:Bold
 URxvt.scrollbar: false
 URxvt.visualBell: false
 URxvt.saveLines: 0
-URxvt.geometry: 110x40 
+URxvt.geometry: 100x40 
 URxvt.depth: 24
 URxvt.cursorBlink: true
 URxvt.cursorUnderline: false
@@ -58,38 +58,38 @@ URxvt.perl-ext-common: default,clipboard,selection-to-clipboard
 URxvt.keysym.Shift-Control-V: eval:paste_clipboard
 URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
 URxvt.urlLauncher:     /usr/bin/firefox
-URxvt.background:      black
-URxvt.foreground:      #00cc00
-URxvt.cursorColor:     #00ff00
-URxvt.underlineColor:  green
+URxvt.background:      #f6f6f6
+URxvt.foreground:      #2c2c2c
+URxvt.cursorColor:     #000000
+URxvt.underlineColor:  #ffffff
 
 ! black
-URxvt.color0:       black
+URxvt.color0:       #f6f6f6
 URxvt.color8:       black
 
 ! red
-URxvt.color1:       #00cc00
-URxvt.color9:       #00cc00
+URxvt.color1:       #2c2c2c
+URxvt.color9:       #2c2c2c
 
 ! green
-URxvt.color2:       #00cc00
-URxvt.color10:      #00cc00
+URxvt.color2:       #2c2c2c
+URxvt.color10:      #2c2c2c
 
 ! yellow
-URxvt.color3:       #00cc00
-URxvt.color11:      #00cc00
+URxvt.color3:       #2c2c2c
+URxvt.color11:      #2c2c2c
 
 ! blue
-URxvt.color4:       #00cc00
-URxvt.color12:      #00cc00
+URxvt.color4:       #2c2c2c
+URxvt.color12:      #2c2c2c
 
 ! magenta
-URxvt.color5:       #00cc00
-URxvt.color13:      #00cc00
+URxvt.color5:       #2c2c2c
+URxvt.color13:      #2c2c2c
 
 ! cyan
-URxvt.color6:       #00cc00
-URxvt.color14:      #00cc00
+URxvt.color6:       #2c2c2c
+URxvt.color14:      #2c2c2c
 
 ! white
 URxvt.color7:       #ffffff
