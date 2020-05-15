@@ -86,7 +86,9 @@
 (use-package yasnippet
   :ensure t
   :config
-  (yas-global-mode -1))
+  (yas-global-mode -1)
+  (add-hook 'c++-mode-hook 'yas-minor-mode)
+  (add-hook 'c-mode-hook 'yas-minor-mode))
 
 ;; Auto completion with Company
 (use-package company
@@ -98,8 +100,8 @@
   :config
   (setq company-idle-delay 0.2)
   (add-hook 'racer-mode-hook
-      (lambda ()
-        (setq-local company-tooltip-align-annotations t))))
+	    (lambda ()
+	      (setq-local company-tooltip-align-annotations t))))
 
 ;; Flycheck
 (use-package flycheck
@@ -122,17 +124,6 @@
     (add-hook 'scheme-mode-hook #'parinfer-mode)
     (add-hook 'lisp-mode-hook #'parinfer-mode)
     (add-hook 'janet-mode-hook #'parinfer-mode)))
-
-;; Common Lisp IDE
-(use-package slime
-  :disabled
-  :ensure t
-  :bind
-  ("C-l" . slime-repl-clear-buffer)
-  :config
-  (load (expand-file-name "~/repo/common-lisp/quicklisp/slime-helper.el"))
-  (setq inferior-lisp-program (executable-find "sbcl"))
-  (slime-setup '(slime-repl slime-fancy slime-company)))
 
 ;; Advanced minibuffer completion
 (use-package counsel
@@ -176,25 +167,6 @@
   :diminish faustine-mode
   :defer t
   :mode ("\\.dsp\\'" . faustine-mode))
-
-;; Auto Complete
-(use-package auto-complete
-  :diminish auto-complete-mode
-  :init
-  (setq ac-use-fuzzy t
-        ac-disable-inline t
-        ac-use-menu-map t
-        ac-auto-show-menu t
-        ac-auto-start 0
-        ac-ignore-case t
-        ac-candidate-menu-min 0)
-  :config
-  (progn
-    (add-to-list 'ac-modes 'faustine)
-    (add-hook 'faustine-mode 'auto-complete-mode)
-    (add-to-list 'load-path "~/.emacs.d/sclang-ac/")
-    (require 'sclang-ac-mode)
-    (add-hook 'sclang-mode-hook 'auto-complete-mode))) 
 
 ;; Python mode
 (use-package python
@@ -244,12 +216,8 @@
   :init (add-to-list 'load-path "~/.emacs.d/scel/")
   :config
   (progn
-    ;; (load-file "~/.emacs.d/sclang-ac-mode.el")
-    ;; (add-to-list 'load-path "~/.emacs.d/sclang-ac/")
-    ;; (require 'sclang-ac-mode)
-    ;; (load-file "~/.emacs.d/company-sclang-backend.el")
     (setq
-     ;;skeleton-pair 1
+     skeleton-pair 1
      auto-scroll-post-buffer t
      sclang-eval-line-forward nil)
 
@@ -258,7 +226,6 @@
     (add-hook 'sclang-mode-hook 'yas-minor-mode)
     
     ;; (use-package company-sclang
-    ;;   :load-path "~/.emacs.d/company-sclang"
     ;;   :commands (company-sclang-setup)
     ;;   :after company
     ;;   :init (company-sclang-setup))
@@ -267,14 +234,14 @@
       :commands (sclang-snippets-initialize)
       :after yasnippet
       :init (sclang-snippets-initialize)))
-    
-   ;; (add-hook 'sclang-mode-hook 'sclang-ac-mode))
   
   :bind (("\"" . skeleton-pair-insert-maybe)
          ("\{" . skeleton-pair-insert-maybe)
          ("\[" . skeleton-pair-insert-maybe)
          ("\(" . skeleton-pair-insert-maybe)
-         ("C-c C-c" . 'sclang-eval-region-or-line)))
+	 ("C-c C-x" . sclang-eval-defun)
+	 ("C-c C-f" . sclang-find-help-in-gui)
+         ("C-c C-c" . sclang-eval-region-or-line)))
 
 ;; Robe mode
 (use-package robe
@@ -337,15 +304,6 @@
   (interactive)
   (ibuffer-sidebar-toggle-sidebar)
   (dired-sidebar-toggle-sidebar))
-
-;; Markdown mode
-(use-package markdown-mode
-  :ensure t
-  :commands (markdown-mode gfm-mode)
-  :mode (("README\\.md\\'" . gfm-mode)
-         ("\\.md\\'" . markdown-mode)
-         ("\\.markdown\\'" . markdown-mode))
-  :init (setq markdown-command "multimarkdown"))
 
 ;; Haskell mode
 (use-package haskell-mode
@@ -457,16 +415,20 @@
     (add-hook 'janet-mode-hook #'inf-janet-minor-mode)))  
 
 ;; Lua mode
+(use-package company-lua
+  :after
+  (company))
+
 (use-package lua-mode
   :ensure t
   :mode (("\\.lua\\'" . lua-mode))
   :config
-  (add-hook 'lua-mode-hook #'company-mode))
+  (add-hook 'lua-mode-hook 'company-mode)
+  (add-hook 'lua-mode-hook 'flycheck-mode))
 
 ;; Fennel mode
 (defun fennel-mode-hook-fn ()
-  (interactive)
-  (slime-mode nil))
+  (interactive))
 
 (use-package fennel-mode
   :mode ("\\.fnl\\'")
@@ -474,6 +436,31 @@
   :config
   (progn
     (add-hook 'fennel-mode-hook 'fennel-mode-hook-fn)))
+
+(use-package lsp-mode
+  :ensure t
+  :commands lsp)
+
+(use-package company-lsp
+  :ensure t :commands company-lsp
+  :config (push 'company-lsp company-backends))
+
+(use-package cc-mode
+  :config
+  (add-hook 'c-mode-common-hook (lambda ()
+				  (setq c-default-style "bsd")
+				  (setq c-basic-offset 4)
+				  (setq indent-tabs-mode t))))
+
+(use-package ccls
+  :ensure t
+  :config
+  (setq ccls-executable "/bin/ccls")
+  (setq lsp-prefer-flymake nil)
+  (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++ -cppcheck c/c++-gcc))
+  (setq ccls-args '("--init={\"clang\": {\"resourceDir\": \"/usr/lib/clang/10.0.0\"}}"))
+  :hook
+  ((c-mode c++-mode) . (lambda () (require 'ccls) (lsp))))
 
 ;; ---------------- ;;
 ;; CUSTOM VARIABLES ;;
@@ -494,7 +481,7 @@
  '(faustine-output-buffer-name "\\*Faust\\*")
  '(package-selected-packages
    (quote
-    (lua-mode yas dashboard projectile which-key transient flycheck-clj-kondo ibuffer-sidebar yasnippet-snippets flx markdown-mode+ hindent tidal psc-ide sclang-snippets lisp lisp-mode paredit dired-sidebar god-mode rvm enh-ruby ehn-ruby ehn-ruby-mode robe-mode highlight osc robe inf-ruby yasnippet sclang monroe hy-mode diminish faustine w3m inf-clojure smartparens zeal-at-point smex auto-complete slime-company geiser slime helm magit kosmos-theme cider use-package smooth-scrolling racer parinfer inverse-acme-theme flycheck-rust flycheck-irony counsel company-racer cargo ace-window)))
+    (flycheck ccls company-lsp lsp-mode dash-functional dash company-lua lua-mode yas dashboard projectile which-key transient flycheck-clj-kondo ibuffer-sidebar yasnippet-snippets flx hindent tidal sclang-snippets lisp lisp-mode paredit dired-sidebar god-mode rvm enh-ruby ehn-ruby ehn-ruby-mode robe-mode highlight osc robe inf-ruby yasnippet sclang monroe hy-mode diminish faustine w3m inf-clojure smartparens zeal-at-point smex geiser helm magit kosmos-theme cider use-package smooth-scrolling racer parinfer inverse-acme-theme flycheck-rust counsel company-racer cargo ace-window)))
  '(show-paren-mode t))
 
 ;; ------------------------- ;;
@@ -502,7 +489,7 @@
 ;; ------------------------- ;;
 
 (windmove-default-keybindings 'meta)
-(global-set-key (kbd "M-j") #'counsel-M-x)
+(global-set-key (kbd "M-SPC") #'counsel-M-x)
 (global-set-key (kbd "C-o") #'counsel-find-file)
 (global-set-key (kbd "M-S-<left>") 'shrink-window-horizontally)
 (global-set-key (kbd "M-S-<right>") 'enlarge-window-horizontally)
@@ -524,6 +511,7 @@
 (global-set-key (kbd "C-x C-d") 'duplicate-line) ;; duplicate line
 (global-set-key (kbd "C->") 'end-of-buffer)
 (global-set-key (kbd "C-<") 'beginning-of-buffer)
+(global-set-key (kbd "C-c C-d") 'dired)
 
 (global-unset-key (kbd "C-h C-h"))
 (global-unset-key (kbd "C-x C-p"))
@@ -535,9 +523,11 @@
 
 ;; Set Font
 (set-face-attribute 'default nil
-                    :family "Source Code Pro"
+                    :family "JetBrains Mono"
                     :height 75
-                    :weight 'semibold)
+                    :weight 'medium)
+
+;; (set-default-font "rissole 12")
 
 ;;------------------------;;
 ;;   CUSTOM UTILITIES     ;;
